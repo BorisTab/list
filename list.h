@@ -205,9 +205,10 @@ public:
         std::system(dotCommand);
     }
 
-    void listOk() {
+    int listOk() {
         size_t sizeChecker = 0;
         Node <elemType> *currentNode = head;
+        int errCount = 0;
 
         while (currentNode) {
             sizeChecker++;
@@ -218,29 +219,42 @@ public:
             printf("Wrong size:\n "
                    "  got: %ld\n"
                    "await: %ld\n", sizeChecker, size);
+            errCount++;
         }
 
         currentNode = head;
         for (size_t i = 1; i < size; i++) {
             if (!currentNode) {
                 printf("Wrong pointer to node\n");
+                errCount++;
             }
             currentNode = currentNode->nextPointer;
         }
 
         if (currentNode != tail) {
             printf("List doesn't reach the tail\n");
+            errCount++;
         }
 
         for (size_t i = 1; i < size; i++) {
             if (!currentNode) {
                 printf("Wrong pointer to node\n");
+                errCount++;
             }
             currentNode = currentNode->previousPointer;
         }
 
         if (currentNode != head) {
             printf("List doesn't reach the head\n");
+            errCount++;
         }
+
+        if(errCount) {
+            printf("%d errors\n", errCount);
+        } else {
+            printf("List is OK\n");
+        }
+
+        return errCount;
     }
 };
