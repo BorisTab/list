@@ -3,4 +3,4 @@ project(list)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(list main.cpp list.h)
+add_executable(list main.cpp list.h arrList.h)

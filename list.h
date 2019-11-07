@@ -47,6 +47,8 @@ public:
     List() = default;
 
     ~List() {
+        if (!head) return;
+
         Node <elemType> *currentNode = head;
         while (currentNode->nextPointer) {
             currentNode = currentNode->nextPointer;
@@ -139,9 +141,16 @@ public:
     void deleteElem(Node <elemType> *node) {
         assert(node);
 
-        (*(node->previousPointer)).nextPointer = node->nextPointer;
-        (*(node->nextPointer)).previousPointer = node->previousPointer;
+        if (node->previousPointer) {
+            (*(node->previousPointer)).nextPointer = node->nextPointer;
+        }
 
+        if (node->nextPointer) {
+            (*(node->nextPointer)).previousPointer = node->previousPointer;
+
+        }
+
+        size--;
         delete node;
     }
 
@@ -170,6 +179,25 @@ public:
         return idNode;
     }
 
+    void clear() {
+        if (!head) return;
+
+        Node <elemType> *currentPointer = head;
+
+        while (currentPointer) {
+            Node <elemType> *nextNode =  currentPointer->nextPointer;
+            deleteElem(currentPointer);
+            currentPointer = nextNode;
+        }
+
+        head = nullptr;
+        tail = nullptr;
+    }
+
+    elemType getValue (Node <elemType> *node) {
+        return node->value;
+    }
+
     void dump() {
         std::ofstream  dumpFile (dumpFilePath);
         if (!dumpFile) {
@@ -180,23 +208,25 @@ public:
         dumpFile << "digraph G{\n";
         dumpFile << "\"Size: " << size <<"\";\n";
 
-        Node <elemType> *currentNode = head;
-        while (currentNode) {
-            dumpFile << "node_" << currentNode << " [shape=record, label=\" " <<  currentNode << " | Val: " << currentNode->value <<" \"];\n";
+        if (head) {
+            Node <elemType> *currentNode = head;
+            while (currentNode) {
+                dumpFile << "node_" << currentNode << " [shape=record, label=\" " <<  currentNode << " | Val: " << currentNode->value <<  " \"];\n";
 
-            currentNode = currentNode->nextPointer;
+                currentNode = currentNode->nextPointer;
+            }
+
+            dumpFile << "head->node_" << head << ";\n";
+            currentNode = head;
+            while (currentNode->nextPointer) {
+                dumpFile << "node_" << currentNode << "->node_" << currentNode->nextPointer << ";\n";
+                dumpFile << "node_" << currentNode->nextPointer << "->node_" << currentNode << ";\n";
+                currentNode = currentNode->nextPointer;
+            }
+            dumpFile << "node_" << tail << "->tail;\n";
         }
 
-        dumpFile << "head->node_" << head << ";\n";
-        currentNode = head;
-        while (currentNode->nextPointer) {
-            dumpFile << "node_" << currentNode << "->" << "node_" << currentNode->nextPointer << ";\n";
-            dumpFile << "node_" << currentNode->nextPointer << "->" << "node_" << currentNode << ";\n";
-
-            currentNode = currentNode->nextPointer;
-        }
-        dumpFile << "node_" << tail << "->tail;";
-        dumpFile << "\n}\n";
+        dumpFile << "}\n";
 
         dumpFile.close();
 
