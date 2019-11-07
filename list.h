@@ -31,7 +31,7 @@ private:
     Node <elemType> *tail = nullptr;
     size_t size = 0;
 
-    Node<elemType> *newNode(elemType val) {
+    Node <elemType> *newNode(elemType val) {
         return new Node <elemType> (val);
     }
 
@@ -47,7 +47,7 @@ public:
     List() = default;
 
     ~List() {
-        Node<elemType> *currentNode = head;
+        Node <elemType> *currentNode = head;
         while (currentNode->nextPointer) {
             currentNode = currentNode->nextPointer;
             delete currentNode->previousPointer;
@@ -63,13 +63,13 @@ public:
 
         if (size == 0) {
             head = node;
-            tail = node;
         } else {
             node->nextPointer = nullptr;
             node->previousPointer = tail;
             tail->nextPointer = node;
-            tail = node;
         }
+
+        tail = node;
         size++;
     }
 
@@ -77,14 +77,14 @@ public:
         auto *node = newNode(val);
 
         if (size == 0) {
-            head = node;
             tail = node;
         } else {
             node->nextPointer = head;
             node->previousPointer = nullptr;
             head->previousPointer = node;
-            head = node;
         }
+
+        head = node;
         size++;
     }
 
@@ -180,7 +180,7 @@ public:
         dumpFile << "digraph G{\n";
         dumpFile << "\"Size: " << size <<"\";\n";
 
-        Node<elemType> *currentNode = head;
+        Node <elemType> *currentNode = head;
         while (currentNode) {
             dumpFile << "node_" << currentNode << " [shape=record, label=\" " <<  currentNode << " | Val: " << currentNode->value <<" \"];\n";
 
