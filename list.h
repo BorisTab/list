@@ -93,6 +93,11 @@ public:
     void insertAfter(Node <elemType> *insertAfterNode, elemType val) {
         assert(insertAfterNode);
 
+        if (insertAfterNode == tail) {
+            pushBack(val);
+            return;
+        }
+
         auto *node = newNode(val);
 
         node->nextPointer = insertAfterNode->nextPointer;
@@ -104,6 +109,11 @@ public:
 
     void insertBefore(Node <elemType> *insertBeforeNode, elemType val) {
         assert(insertBeforeNode);
+
+        if (insertBeforeNode == head) {
+            pushFront(val);
+            return;
+        }
 
         auto *node = newNode(val);
 
@@ -126,13 +136,13 @@ public:
         return size;
     }
 
-    Node <elemType> *elemAfter(Node <elemType> *node) {
+    Node <elemType> *elemAfter(const Node <elemType> *node) {
         assert(node);
 
         return node->nextPointer;
     }
 
-    Node <elemType> *elemBefore(Node <elemType> *node) {
+    Node <elemType> *elemBefore(const Node <elemType> *node) {
         assert(node);
 
         return node->previousPointer;
@@ -194,7 +204,7 @@ public:
         tail = nullptr;
     }
 
-    elemType getValue (Node <elemType> *node) {
+    elemType getValue (const Node <elemType> *node) {
         return node->value;
     }
 
@@ -240,7 +250,7 @@ public:
         Node <elemType> *currentNode = head;
         int errCount = 0;
 
-        while (currentNode) {
+        while (currentNode && sizeChecker <= size) {
             sizeChecker++;
             currentNode = currentNode->nextPointer;
         }

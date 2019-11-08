@@ -94,6 +94,11 @@ public:
     void insertAfter(size_t insertAfterNode, elemType val) {
         assert(insertAfterNode);
 
+        if (insertAfterNode == tail) {
+            pushBack(val);
+            return;
+        }
+
         size_t elemPos = setNewVal(val);
 
         nodeArray[elemPos].next = nodeArray[insertAfterNode].next;
@@ -105,6 +110,11 @@ public:
 
     void insertBefore(size_t insertBeforeNode, elemType val) {
         assert(insertBeforeNode);
+
+        if (insertBeforeNode == head) {
+            pushFront(val);
+            return;
+        }
 
         size_t elemPos = setNewVal(val);
 
