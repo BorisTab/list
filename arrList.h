@@ -124,13 +124,7 @@ public:
             return;
         }
 
-        size_t elemPos = setNewVal(val);
-
-        nodeArray[elemPos].next = insertBeforeNode;
-        nodeArray[elemPos].prev = nodeArray[insertBeforeNode].prev;
-        nodeArray[nodeArray[insertBeforeNode].prev].next = elemPos;
-        nodeArray[insertBeforeNode].prev = elemPos;
-        size++;
+        insertAfter(nodeArray[insertBeforeNode].prev, val);
     }
 
     size_t getHead() {
@@ -159,10 +153,11 @@ public:
 
     void deleteElem(size_t elemPos) {
         assert(elemPos);
+        assert(maxSize - elemPos > 0);
+        assert(size > 1 && nodeArray[elemPos].prev);
 
         if (nodeArray[elemPos].prev) {
             nodeArray[nodeArray[elemPos].prev].next = nodeArray[elemPos].next;
-
         }
 
         if (nodeArray[elemPos].next) {

@@ -115,13 +115,7 @@ public:
             return;
         }
 
-        auto *node = newNode(val);
-
-        node->nextPointer = insertBeforeNode;
-        node->previousPointer = insertBeforeNode->previousPointer;
-        (*(insertBeforeNode->previousPointer)).nextPointer = node;
-        insertBeforeNode->previousPointer = node;
-        size++;
+        insertAfter(insertBeforeNode->previousPointer, val);
     }
 
     Node <elemType> *getHead() {
