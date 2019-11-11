@@ -35,9 +35,13 @@ private:
     size_t setNewVal(elemType val) {
         nodeArray[freePos].value = val;
         size_t pos = freePos;
-        freePos = nodeArray[freePos].next;
+        freePos = nextFree();
 
         return pos;
+    }
+
+    size_t nextFree() {
+        return nodeArray[freePos].next;
     }
 
     void pushFreePos(size_t elemPos) {
