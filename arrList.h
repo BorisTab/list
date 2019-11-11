@@ -30,15 +30,19 @@ private:
     ArrNode <elemType> *nodeArray = nullptr;
     size_t head = 0;
     size_t tail = 0;
-    std::stack <size_t> freePosStack = {};
+    size_t freePos = 1;
 
     size_t setNewVal(elemType val) {
-        size_t freePos = freePosStack.top();
-        freePosStack.pop();
-
         nodeArray[freePos].value = val;
+        size_t pos = freePos;
+        freePos = nodeArray[freePos].next;
 
-        return freePos;
+        return pos;
+    }
+
+    void pushFreePos(size_t elemPos) {
+        nodeArray[nodeArray[freePos].next].prev = elemPos;
+        nodeArray[freePos].next = elemPos;
     }
 
 public:
@@ -49,8 +53,8 @@ public:
         nodeArray[0].next = 0;
         nodeArray[0].prev = 0;
 
-        for (size_t i = maxSize; i > 0; i--) {
-            freePosStack.push(i);
+        for (size_t i = 1; i < maxSize; i++) {
+            nodeArray[i].next = i + 1;
         }
     }
 
@@ -161,7 +165,7 @@ public:
             nodeArray[nodeArray[elemPos].next].prev = nodeArray[elemPos].prev;
         }
 
-        freePosStack.push(elemPos);
+        pushFreePos(elemPos);
         size--;
     }
 
@@ -222,7 +226,10 @@ public:
         if (head) {
             size_t elemPos = head;
             while (elemPos) {
-                dumpFile << "node_" << elemPos << " [shape=record, label=\" " << elemPos << " | Val: " << nodeArray[elemPos].value << " \"];\n";
+                dumpFile << "node_" << elemPos << " [shape=record, label=\" " << elemPos << " | Val: "
+                << nodeArray[elemPos].value << " | " << "prev: " << nodeArray[elemPos].prev << " | "
+                << "next: " << nodeArray[elemPos].next << " \"];\n";
+
                 elemPos = nodeArray[elemPos].next;
             }
 
