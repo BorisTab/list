@@ -303,4 +303,70 @@ public:
 
         return errCount;
     }
+
+    void trueDump() {
+        std::ofstream dumpFile ("../trueDump.txt");
+        if (!dumpFile) {
+            std::cout << "File isn't open\n";
+            exit(FILE_OPEN_FAILED);
+        }
+
+        dumpFile << "digraph G{\n"
+                    "mainNode[shape=none,\n"
+                    "label = <<table><tr>";
+//        dumpFile << "\"Size: " << size <<"\";\n";
+
+        dumpFile << "<td port=\"node" << "0" << R"(num" border="1" bgcolor="red">)" << "0" << "</td>\n";
+        for (int i = 1; i < maxSize; i++) {
+            size_t elemPos = head;
+            while (elemPos) {
+                if (i == elemPos) {
+                    dumpFile << "<td port=\"node" << i << R"(num" border="1" bgcolor="green">)" << i << "</td>\n";
+                    break;
+                }
+                elemPos = nodeArray[elemPos].next;
+            }
+            if (elemPos != i) {
+                dumpFile << "<td port=\"node" << i << R"(num" border="1" bgcolor="orange">)" << i << "</td>\n";
+            }
+        }
+
+        dumpFile << "</tr>\n<tr>\n";
+
+        dumpFile << "<td port=\"node" << "0" << R"(val" border="1" bgcolor="red">)" << "0" << "</td>\n";
+        for (int i = 1; i < maxSize; i++) {
+            size_t elemPos = head;
+            while (elemPos) {
+                if (i == elemPos) {
+                    dumpFile << "<td port=\"node" << i << R"(val" border="1" bgcolor="green">value: )" << nodeArray[i].value
+                             << "</td>\n";
+                    break;
+                }
+                elemPos = nodeArray[elemPos].next;
+            }
+            if (elemPos != i) {
+                dumpFile << "<td port=\"node" << i << R"(val" border="1" bgcolor="orange">value: )" << nodeArray[i].value
+                         << "</td>\n";
+            }
+        }
+
+        dumpFile << "</tr></table>>\n];\n";
+
+        size_t elemPos = head;
+        dumpFile << "mainNode:node0num:n->" << "mainNode:node" << head << "num:n;\n";
+        while (nodeArray[elemPos].next) {
+            dumpFile << "mainNode:node" << elemPos << "num:n->mainNode:node" << nodeArray[elemPos].next << "num:n;\n";
+            dumpFile << "mainNode:node" << nodeArray[elemPos].next << "val:s->mainNode:node" << elemPos << "val:s;\n";
+            elemPos = nodeArray[elemPos].next;
+        }
+        dumpFile << "mainNode:node" << tail << "val:s->" << "mainNode:node0val:s;\n";
+
+        dumpFile << "}\n";
+
+        dumpFile.close();
+
+        char dotCommand[FILENAME_MAX] = "";
+        sprintf(dotCommand, "dot -Tpng -O %s", "../trueDump.txt");
+        std::system(dotCommand);
+    }
 };

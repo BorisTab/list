@@ -1,0 +1,47 @@
+digraph G{
+mainNode[shape=none,
+label = <<table><tr><td port="node0num" border="1" bgcolor="red">0</td>
+<td port="node1num" border="1" bgcolor="green">1</td>
+<td port="node2num" border="1" bgcolor="orange">2</td>
+<td port="node3num" border="1" bgcolor="green">3</td>
+<td port="node4num" border="1" bgcolor="green">4</td>
+<td port="node5num" border="1" bgcolor="green">5</td>
+<td port="node6num" border="1" bgcolor="green">6</td>
+<td port="node7num" border="1" bgcolor="orange">7</td>
+<td port="node8num" border="1" bgcolor="orange">8</td>
+<td port="node9num" border="1" bgcolor="orange">9</td>
+<td port="node10num" border="1" bgcolor="orange">10</td>
+<td port="node11num" border="1" bgcolor="orange">11</td>
+<td port="node12num" border="1" bgcolor="orange">12</td>
+<td port="node13num" border="1" bgcolor="orange">13</td>
+<td port="node14num" border="1" bgcolor="orange">14</td>
+</tr>
+<tr>
+<td port="node0val" border="1" bgcolor="red">0</td>
+<td port="node1val" border="1" bgcolor="green">value: 50</td>
+<td port="node2val" border="1" bgcolor="orange">value: 15</td>
+<td port="node3val" border="1" bgcolor="green">value: 10</td>
+<td port="node4val" border="1" bgcolor="green">value: 60</td>
+<td port="node5val" border="1" bgcolor="green">value: 55</td>
+<td port="node6val" border="1" bgcolor="green">value: 40</td>
+<td port="node7val" border="1" bgcolor="orange">value: 0</td>
+<td port="node8val" border="1" bgcolor="orange">value: 0</td>
+<td port="node9val" border="1" bgcolor="orange">value: 0</td>
+<td port="node10val" border="1" bgcolor="orange">value: 0</td>
+<td port="node11val" border="1" bgcolor="orange">value: 0</td>
+<td port="node12val" border="1" bgcolor="orange">value: 0</td>
+<td port="node13val" border="1" bgcolor="orange">value: 0</td>
+<td port="node14val" border="1" bgcolor="orange">value: 0</td>
+</tr></table>>
+];
+mainNode:node0num:n->mainNode:node3num:n;
+mainNode:node3num:n->mainNode:node6num:n;
+mainNode:node6val:s->mainNode:node3val:s;
+mainNode:node6num:n->mainNode:node5num:n;
+mainNode:node5val:s->mainNode:node6val:s;
+mainNode:node5num:n->mainNode:node1num:n;
+mainNode:node1val:s->mainNode:node5val:s;
+mainNode:node1num:n->mainNode:node4num:n;
+mainNode:node4val:s->mainNode:node1val:s;
+mainNode:node4val:s->mainNode:node0val:s;
+}
